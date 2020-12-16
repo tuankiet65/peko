@@ -1,0 +1,13 @@
+[package]
+name = "peko-crypto"
+version = "0.1.0"
+authors = ["Ho Tuan Kiet <tuankiet65@gmail.com>"]
+description = "Collection of various cryptographic routines (Keccak, SHA-256, AES, ...)"
+edition = "2018"
+
+[dependencies]
+k256 = { version = "0.6.0", features = ["ecdh", "zeroize", "arithmetic"] }
+rand_core = { version = "0.6.0", features = ["getrandom"] }
+
+[dev-dependencies]
+hex-literal = "0.3.1"
