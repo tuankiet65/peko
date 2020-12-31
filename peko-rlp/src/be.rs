@@ -1,5 +1,3 @@
-use uint::static_assertions::_core::ops::Shl;
-
 pub trait MinBigEndian
 where
     Self: Sized,
