@@ -167,8 +167,7 @@ impl SHA256 {
     }
 }
 
-impl HashFunction for SHA256 {
-    /// Hash output, which is a 256 bit (32 byte) byte array.
+impl HashFunction<{ 256 / 8 }> for SHA256 {
     type Output = [u8; 256 / 8];
 
     fn new() -> SHA256 {
