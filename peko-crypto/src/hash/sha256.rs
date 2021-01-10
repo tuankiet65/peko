@@ -88,7 +88,7 @@ fn process_chunk(chunk: &MessageChunk, source_digest: &InternalDigest) -> Intern
         a = temp1.wrapping_add(temp2);
     }
 
-    return [
+    [
         source_digest[0].wrapping_add(a),
         source_digest[1].wrapping_add(b),
         source_digest[2].wrapping_add(c),
@@ -97,7 +97,7 @@ fn process_chunk(chunk: &MessageChunk, source_digest: &InternalDigest) -> Intern
         source_digest[5].wrapping_add(f),
         source_digest[6].wrapping_add(g),
         source_digest[7].wrapping_add(h),
-    ];
+    ]
 }
 
 /// Implementation of the Secure Hashing Algorithm-2 with 256 bits of output.
