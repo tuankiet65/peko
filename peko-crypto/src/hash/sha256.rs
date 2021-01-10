@@ -147,15 +147,14 @@ impl SHA256 {
             "Length after padding must be divisible by 64 bytes"
         );
 
-        let mut digest = self.digest;
-        for chunk in remaining_with_padding.chunks_exact(CHUNK_SIZE) {
-            digest = process_chunk(
-                chunk.try_into().expect("Chunk must be 64 bytes long"),
-                &digest,
-            );
-        }
-
-        digest
+        remaining_with_padding
+            .chunks_exact(CHUNK_SIZE)
+            .fold(self.digest, |prev_digest, chunk| {
+                process_chunk(
+                    chunk.try_into().expect("Chunk must be 64 bytes long"),
+                    &prev_digest,
+                )
+            })
     }
 }
 
@@ -176,16 +175,14 @@ impl HashFunction for SHA256 {
 
         let iter = self.remaining_data.chunks_exact(CHUNK_SIZE);
 
-        for chunk in iter.clone() {
-            self.digest = process_chunk(
-                chunk
-                    .try_into()
-                    .expect("Message chunk must be 64 bytes long"),
-                &self.digest,
-            );
+        self.digest = iter.clone().fold(self.digest, |prev_digest, chunk| {
+            process_chunk(
+                chunk.try_into().expect("Chunk must be 64 bytes long"),
+                &prev_digest,
+            )
+        });
 
-            self.processed_data_length += chunk.len();
-        }
+        self.processed_data_length += iter.clone().count() * CHUNK_SIZE;
 
         assert!(
             iter.remainder().len() < CHUNK_SIZE,
