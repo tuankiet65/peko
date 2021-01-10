@@ -100,21 +100,30 @@ fn process_chunk(chunk: &MessageChunk, source_digest: &InternalDigest) -> Intern
     ]
 }
 
-/// Implementation of the Secure Hashing Algorithm-2 with 256 bits of output.
+/// Secure Hashing Algorithm-2 with 256 bits of output.
 ///
-/// # Example
+/// # Example using the new-update-digest flow
 /// ```
+/// use hex_literal::hex;
 /// use peko_crypto::hash::{HashFunction, SHA256};
 ///
-/// let correct_digest: [u8; 32] = [
-///     0xd7, 0xa8, 0xfb, 0xb3, 0x07, 0xd7, 0x80, 0x94, 0x69, 0xca, 0x9a, 0xbc, 0xb0,
-///     0x08, 0x2e, 0x4f, 0x8d, 0x56, 0x51, 0xe4, 0x6d, 0x3c, 0xdb, 0x76, 0x2d, 0x02,
-///     0xd0, 0xbf, 0x37, 0xc9, 0xe5, 0x92
-/// ];
+/// let data = b"The quick brown fox jumps over the lazy dog";
+/// let correct_digest = hex!("d7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592");
 ///
 /// let mut hasher = SHA256::new();
-/// hasher.update("The quick brown fox jumps over the lazy dog".as_bytes());
+/// hasher.update(data);
 /// assert_eq!(hasher.digest(), correct_digest)
+/// ```
+///
+/// # Example using the one-shot function
+/// ```
+/// use hex_literal::hex;
+/// use peko_crypto::hash::{HashFunction, SHA256};
+///
+/// let data = b"The quick brown fox jumps over the lazy dog";
+/// let correct_digest = hex!("d7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592");
+///
+/// assert_eq!(SHA256::hash(data), correct_digest);
 /// ```
 pub struct SHA256 {
     digest: InternalDigest,
